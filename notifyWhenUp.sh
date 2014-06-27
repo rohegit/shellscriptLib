@@ -2,7 +2,7 @@
 # =========================
 # Notifies a given user via pushover (https://pushover.net) when a specified host goes online
 # -------------------
-# THIS SCRIPT DEPENDS ON checkHostState.sh
+# THIS SCRIPT DEPENDS ON checkHoststatus.sh
 # You should call it by creating a cronjob
 # =========================
 
@@ -14,8 +14,8 @@ UPTIME="0"
 UPTIMEBEFORENOTIFICATION="10"
 # List of hosts which you like to watch. Separated by spaces
 HOSTSTOWATCH=( host1 host2 host3 )
-# File the state is logged to
-WATCHFILE="/www/hoststate.xml"
+# File the status is logged to
+HOSTSFILE="/www/hosts.xml"
 # Pusover parameters
 PUSHOVERTOKEN="abc123"
 PUSHOVERUSER="user123"
@@ -23,8 +23,8 @@ PUSHOVERUSER="user123"
 # Has the host been online for long enough?
 shouldNotificationBeSent() {
 	HOST=$1
-	TIMEONLINE=`xmlstarlet sel -t -v "//host[@id='$HOST']/uptime" -v . -n <$WATCHFILE`
-	ALREADYNOTIFIED=`xmlstarlet sel -t -v "//host[@id='$HOST']/notified" -v . -n <$WATCHFILE`
+	TIMEONLINE=`xmlstarlet sel -t -v "//host[@id='$HOST']/status/uptime" -v . -n <$HOSTSFILE`
+	ALREADYNOTIFIED=`xmlstarlet sel -t -v "//host[@id='$HOST']/status/notified" -v . -n <$HOSTSFILE`
 	NOW=`date "+%Y-%m-%d %H:%M"`;
 	TIMENOW=`date -d "$NOW" +%s`
 	TIMEUPSEC=`expr $TIMENOW - $TIMEONLINE`; 
@@ -48,17 +48,18 @@ sendNotification() {
 # We need to know which notifications we have already sent
 updateNotificationStatus() {
 	HOST=$1
-	TIMEONLINE=`xmlstarlet sel -t -v "//host[@id='$HOST']/uptime" -v . -n <$WATCHFILE`
+	TIMEONLINE=`xmlstarlet sel -t -v "//host[@id='$HOST']/status/uptime" -v . -n <$HOSTSFILE`
 
 	# We sent a notification so set the status
-	xmlstarlet ed -u "//host[@id='$HOST']/uptime" -v "$TIMEONLINE" "$WATCHFILE"
-	xmlstarlet ed -u "//host[@id='$HOST']/state" -v "1" "$WATCHFILE"
-	xmlstarlet ed -u "//host[@id='$HOST']/notified" -v "1" "$WATCHFILE"
+	xmlstarlet ed -u "//host[@id='$HOST']/status/uptime" -v "$TIMEONLINE" "$HOSTSFILE"
+	xmlstarlet ed -u "//host[@id='$HOST']/status/power" -v "1" "$HOSTSFILE"
+	xmlstarlet ed -u "//host[@id='$HOST']/status/notified" -v "1" "$HOSTSFILE"
 }
 
 # Should a notification be sent
 calcUptimeAndSendNotification() {
-	for HOST in "${HOSTSTOWATCH[@]}"; do
+	HOSTS=($(xmlstarlet sel -t -m "//hosts/host/name" -v . -n < "$HOSTSFILE"))
+	for HOST in "${HOSTS[@]}"; do
 		SENDNOTIFICATION=`shouldNotificationBeSent $HOST`
 	
 		if [ "$SENDNOTIFICATION" -eq "1" ]; then

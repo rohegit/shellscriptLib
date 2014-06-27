@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Example for host-file
+
+Entry for a host:
+
+<host id="host1">
+	<name>host1</name>
+	<description>NAS</description>
+	<ip>192.168.1.1</ip>
+	<mac>11:22:33:44:55:66</mac>
+	<status>
+		<power>1</power>
+		<uptime>1500</uptime>
+		<notified>1</notified>
+	</status>
+</host>
+
+-->
+<hosts>
+	<host id="host1">
+		<name>host1</name>
+		<description>NAS</description>
+		<ip>192.168.100.40</ip>
+		<mac>11:22:33:44:55:66</mac>
+		<status>
+			<power>1</power>
+			<uptime>1500</uptime>
+			<notified>1</notified>
+		</status>
+	</host>
+	<host id="host2">
+		<name>host2</name>
+		<description>Raspberry-Pi</description>
+		<ip>192.168.100.41</ip>
+		<mac>22:22:33:44:55:66</mac>
+		<status>
+			<power>1</power>
+			<uptime>230</uptime>
+			<notified>0</notified>
+		</status>
+	</host>
+	<host id="host3">
+		<name>host3</name>
+		<description>Sons computer</description>
+		<ip>192.168.100.41</ip>
+		<mac>33:22:33:44:55:66</mac>
+		<status>
+			<power>0</power>
+			<uptime>0</uptime>
+			<notified>0</notified>
+		</status>
+	</host>
+</hosts>
