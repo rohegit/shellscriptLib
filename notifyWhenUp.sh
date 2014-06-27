@@ -1,6 +1,6 @@
 #!/bin/sh
 # =========================
-# Notifies a given user via pushover (https://pushover.net)) when a specified host goes online
+# Notifies a given user via pushover (https://pushover.net) when a specified host goes online
 # -------------------
 # THIS SCRIPT DEPENDS ON checkHostState.sh
 # You should call it by creating a cronjob
