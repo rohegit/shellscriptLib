@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Example for host status file
+
+Entry for a host:
+
+<host id="host1">
+	<name>host1</name>
+	<state>1</state>
+	<uptime>1500</uptime>
+	<notified>1</notified>
+</host>
+
+-->
+<hoststate>
+</hoststate>
+	<host id="host1">
+		<name>host1</name>
+		<state>1</state>
+		<uptime>1500</uptime>
+		<notified>1</notified>
+	</host>
+	<host id="host2">
+		<name>host2</name>
+		<state>1</state>
+		<uptime>240</uptime>
+		<notified>0</notified>
+	</host>
+	<host id="host3">
+		<name>host3</name>
+		<state>0</state>
+		<uptime>0</uptime>
+		<notified>0</notified>
+	</host>
+</hoststate>
